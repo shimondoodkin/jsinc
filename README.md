@@ -76,5 +76,5 @@ Other Ideas:
   * Use it for modules that are shared with the browser
   * Use it as a simple way to write simple modules that do not require to export the module's function
   * To bind or to rewrite the function after they loaded
-  * Put add a callback function in the context object
+  * Put a callback function in the context object and call it
   * Put jsinc in the context object, as a way for the script load other scripts, binded with the context object filled in.
