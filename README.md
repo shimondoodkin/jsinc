@@ -16,6 +16,9 @@ syntax:
   * the function returns the resulting global object, after running the script(s)
   * basically it loades the javascript files, adds a window object, executes the script and returns to you the global object with all  of the functions and variables that ware added by the script.
 
+example:
+
+https://github.com/shimondoodkin/googlediff
 
 Getting started
 ===============
@@ -78,3 +81,5 @@ Other Ideas:
   * To bind or to rewrite the function after they loaded
   * Put a callback function in the context object and call it
   * Put jsinc in the context object, as a way for the script load other scripts, binded with the context object filled in.
+  * I use this module to do quick migration of browser libs to node.js
+  
