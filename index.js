@@ -1,28 +1,29 @@
-// example:
-// download http://codeplex.com/jslinq
-// var app={};
-// app.jsinc            = require('inc-non-module');
-// app.jslinq           = app.jsinc(__dirname+'/deps/jslinq/scripts/JSLINQ.js').window.JSLINQ;
-//
-
-//var self=this; 
-//self.load_js_prefix=__dirname; 
-function jsinc( file ) 
-{ 
-  ///if(file begins with http) download it... 
-  //else 
-  //if(file[0]!='/')file=self.load_js_prefix+'/'+file; //node js probably does it better. 
-  var data  = require('fs').readFileSync( file), sandbox  = { 
-    // all local var definations in the script are saved in sandbox; 
-    //  animal: 'cat', 
-    //  count: 2 //want to share anything? you can put it here 
-    window:{Function:Function} // many scripts expect window to be exists 
-  }; 
+var fs=require('fs');
+function jsinc() 
+{
+ var files=arguments;
+ if(arguments.length>1 && typeof arguments[arguments.length-1]=='object')
+ {
+  var sandbox=arguments[arguments.length-1];//the last argument is sand box
+  files=Array.prototype.slice.call(arguments,0,arguments.length-1);// the other arguments are the files array
+ }
+ var data  = "", sandbox  = sandbox || {};   
+ for(var i=0;i<files.length;i++)
+ {
+  var file=files[i];
+  data = fs.readFileSync( file,'utf-8'); 
+  if(!('console' in sandbox))  sandbox.console=console; // adds a console variable, probably a wanted future.
+  if(!('window' in sandbox))   sandbox.window=sandbox; // adds window variable to sandbox, probaly required by some scripts
   process.binding( 'evals').Script.runInNewContext( data, sandbox, file ); 
-  //console.log(sandbox); 
+ }
+ //console.log(sandbox);
  return sandbox; 
 }
-this.jsinc=jsinc;
+jsinc.jsinc=jsinc;//backwards compatibility
+module.exports=jsinc;
 
-//var date=load_js( 'date.js' ); 
+// to get started do like this:
+//
+//var jsinc   = require('jsinc');
+//var date    = jsinc( 'date.js' ); 
 //console.log(date); 
