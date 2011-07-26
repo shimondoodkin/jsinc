@@ -10,7 +10,7 @@ license: MIT
 
 syntax:
 
-     Object context = jsinc(String file1,..., String fileN, Object context)
+     Object context = jsinc( String file1, ... , String fileN, Object context )
 
   * the last argument is an optional context object.
   * the function returns the resulting global object, after running the script(s)
