@@ -30,7 +30,7 @@ To get started do like this:
 
     var jsinc=require('jsinc');
     var date=jsinc( 'date.js' );
-    console.log(date); // see whats there
+    console.log(date); // see what's there
 
 Pinpoint the wanted functions out:
 ----------------------------------
