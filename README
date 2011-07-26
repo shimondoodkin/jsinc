@@ -3,29 +3,37 @@ jsinc - node.js module
 
 This module allows loading of javascript files that made for the browser as modules for node.js;
  
-basicaly it loades the javascript files, adds a window object, executes the script and 
-returns to you the global object with all of the functions and variables that ware added by the script.
-
 by Shimon Doodkin
 
 license: MIT
+
+
+syntax:
+
+     Object context = jsinc(String file1,String file2,...,Object context)
+
+  * the last argument is an optional context object.
+  * the function returns the resulting global object, after running the script(s)
+  * basically it loades the javascript files, adds a window object, executes the script and returns to you the global object with all  of the functions and variables that ware added by the script.
 
 
 Getting started
 ===============
 
 install from npm like:
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
+
     npm install jsinc
 
 To get started do like this:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------
+
     var jsinc=require('jsinc');
     var date=jsinc( 'date.js' );
-    console.log(date);
+    console.log(date); // see whats there
 
 Pinpoint the wanted functions out:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------------------------
 
     // linq example:
     // download linq from http://codeplex.com/jslinq
@@ -36,9 +44,14 @@ Pinpoint the wanted functions out:
 Advanced futures
 ================
 
+Read multiple files at once:
+----------------------------
 
-custom context:
-~~~~~~~~~~~~~~
+    var jsinc = require('jsinc');
+    var date = jsinc( 'date.js', 'date2.js' );
+
+Custom context:
+---------------
 
     if the last argument is an object then it is used as context.
 
@@ -48,11 +61,20 @@ custom context:
 
 
     // you can do even staff like this (if you know what are you doing):
-    var date=jsinc( 'date.js',this);
+    var date=jsinc('date.js',this);
+    // the above does a "mixin" but may have problem (nodejs bug)
+    // if this module exports getters,setter, and nonenumeratable
 
-
-read multiple files at once:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+    // read multiple files in steps by reusing the context 
     var jsinc = require('jsinc');
-    var date = jsinc( 'date.js', 'date2.js' );
+    var context = jsinc( 'date.js' );
+        context = jsinc( 'date2.js',context );
+
+Other Ideas:
+------------
+
+  * Use it for modules that are shared with the browser
+  * Use it as a simple way to write simple modules that do not require to export the module's function
+  * To bind or to rewrite the function after they loaded
+  * Put add a callback function in the context object
+  * Put jsinc in the context object, as a way for the script load other scripts, binded with the context object filled in.
