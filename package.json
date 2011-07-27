@@ -1,0 +1,19 @@
+{
+  "author": "Shimon Doodkin <helpmepro1@gmail.com> (http://doodkin.com)",
+  "name": "jsinc",
+  "description": "Include non module javascript file as module",
+  "version": "0.1.2",
+  "homepage": "http://github.com/shimondoodkin/jsinc",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/shimondoodkin/jsinc.git"
+  },
+  "engines": {
+    "node": ">=0.3.1"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "test.js"
+  }
+}

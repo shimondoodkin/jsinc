@@ -1,4 +1,5 @@
 var fs=require('fs');
+var vm=require('vm');
 function jsinc() 
 {
  var files=arguments;
@@ -14,7 +15,7 @@ function jsinc()
   data = fs.readFileSync( file,'utf-8'); 
   if(!('console' in sandbox))  sandbox.console=console; // adds a console variable, probably a wanted future.
   if(!('window' in sandbox))   sandbox.window=sandbox; // adds window variable to sandbox, probaly required by some scripts
-  process.binding( 'evals').Script.runInNewContext( data, sandbox, file ); 
+  vm.runInNewContext( data, sandbox, file ); 
  }
  //console.log(sandbox);
  return sandbox; 
