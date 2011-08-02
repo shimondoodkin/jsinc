@@ -47,10 +47,3 @@ if(!('XMLList' in window)) console.log('no XMLList');
 window.foo='setting a variable to the window is the same as setting a variable to this';
 console.log(foo);
 console.log(window.foo);
-
-function windowfootest()
-{
- window.foo2='setting a variable to the window is the same as setting a variable to this';
- console.log(foo2);
- console.log(window.foo2);
-}

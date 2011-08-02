@@ -2,7 +2,7 @@
   "author": "Shimon Doodkin <helpmepro1@gmail.com> (http://doodkin.com)",
   "name": "jsinc",
   "description": "Include non module javascript file as module",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "homepage": "http://github.com/shimondoodkin/jsinc",
   "repository": {
     "type": "git",
