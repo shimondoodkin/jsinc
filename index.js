@@ -20,25 +20,34 @@ function jsinc()
  }
 
  var files=arguments;
- var data, sandbox  = sandbox || {};
+ var sandbox  = sandbox || {};
+ var called_done=0;
  for(var i=0;i<files.length;i++)
  {
   var file=files[i];
-  data='this.__defineGetter__(\'window\',function(){return this;});';
   if(callback) // do this async
   {
-   data += fs.readFile( file,'utf-8',function(data)
+   fs.readFile( file,'utf-8',function(err,data)
    {
-    if(!('console' in sandbox))  sandbox.console=console; // adds a console variable, probably a wanted future.
-    if(!('jsinc' in sandbox))  sandbox.jsinc=getbind(sandbox);
-    //if(!('window' in sandbox))   sandbox.window=sandbox; // adds window variable to sandbox, probaly required by some scripts// commented out because the getter above workes better
-    vm.runInNewContext( data, sandbox, file );   
-    callback(sandbox);
+    if(!err)
+    {
+     if(!('console' in sandbox))  sandbox.console=console; // adds a console variable, probably a wanted future.
+     if(!('jsinc' in sandbox))  sandbox.jsinc=getbind(sandbox);
+     //if(!('window' in sandbox))   sandbox.window=sandbox; // adds window variable to sandbox, probaly required by some scripts// commented out because the getter above workes better
+     vm.runInNewContext( 'this.__defineGetter__(\'window\',function(){return this;});'+data, sandbox, file );
+    }
+    else
+    {
+     console.log(err.stack)
+    }
+    called_done++;
+    if(files.length==called_done)callback(sandbox);
    });
+   
   }
   else
   {
-   data += fs.readFileSync( file,'utf-8');
+   var data = 'this.__defineGetter__(\'window\',function(){return this;});' + fs.readFileSync( file,'utf-8');
    if(!('console' in sandbox))  sandbox.console=console; // adds a console variable, probably a wanted future.
    if(!('jsinc' in sandbox))  sandbox.jsinc=getbind(sandbox);
    //if(!('window' in sandbox))   sandbox.window=sandbox; // adds window variable to sandbox, probaly required by some scripts// commented out because the getter above workes better

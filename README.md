@@ -10,7 +10,7 @@ license: MIT
 
 syntax:
 
-     Object context = jsinc( String file1, ... , String fileN, Object context )
+     Object context = jsinc( String file1, ... , String fileN, Object context, Function callback )
 
   * the last argument is an optional context object.
   * the function returns the resulting global object, after running the script(s)
@@ -72,6 +72,13 @@ Custom context:
     var jsinc = require('jsinc');
     var context = jsinc( 'date.js' );
         context = jsinc( 'date2.js',context );
+
+Callback and Async file reading and loading
+-------------------------------------------
+var app={};
+jsinc( 'date.js',{XMLHttpRequest:require('xmlhttprequest')}, function (date){ app.date=date; });
+// if you add a callback function, the file will be read asynchronously.
+
 
 Other Ideas:
 ------------
