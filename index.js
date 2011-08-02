@@ -1,8 +1,18 @@
+// to get started do like this:
+//
+//var jsinc   = require('jsinc');
+//var date    = jsinc( 'date.js' );
+//console.log(date);
+
 var fs=require('fs');
 var vm=require('vm');
+
 function jsinc()
 {
  var callback=false;
+
+ // this is written 3 time to accept last arguments in any order: (object,function) or (function,object)
+ 
  if(arguments.length>1 && typeof arguments[arguments.length-1]=='function')
  {
   var callback=arguments[arguments.length-1];//the last argument is sand box
@@ -33,7 +43,6 @@ function jsinc()
     {
      if(!('console' in sandbox))  sandbox.console=console; // adds a console variable, probably a wanted future.
      if(!('jsinc' in sandbox))  sandbox.jsinc=getbind(sandbox);
-     //if(!('window' in sandbox))   sandbox.window=sandbox; // adds window variable to sandbox, probaly required by some scripts// commented out because the getter above workes better
      vm.runInNewContext( 'this.__defineGetter__(\'window\',function(){return this;});'+data, sandbox, file );
     }
     else
@@ -50,7 +59,6 @@ function jsinc()
    var data = 'this.__defineGetter__(\'window\',function(){return this;});' + fs.readFileSync( file,'utf-8');
    if(!('console' in sandbox))  sandbox.console=console; // adds a console variable, probably a wanted future.
    if(!('jsinc' in sandbox))  sandbox.jsinc=getbind(sandbox);
-   //if(!('window' in sandbox))   sandbox.window=sandbox; // adds window variable to sandbox, probaly required by some scripts// commented out because the getter above workes better
    vm.runInNewContext( data, sandbox, file );
   }
   
@@ -58,10 +66,16 @@ function jsinc()
  //console.log(sandbox);
  return sandbox;
 }
+module.exports=jsinc;
+jsinc.jsinc=jsinc;//backwards compatibility
+
+
+//additional staff:
+
 function getbind(that)
 {
  if(!that)that={};
- return function()
+ var fn=function()
  {
   if(arguments.length>2 && typeof arguments[arguments.length-1]!='object' &&  typeof arguments[arguments.length-2]!='object' )
    Array.push.call(arguments,that);
@@ -69,13 +83,12 @@ function getbind(that)
    Array.push.call(arguments,that);
   jsinc.call(this,arguments);
  }
+ //add the extentions to the bound function to look like the original function
+ fn.jsinc=jsinc;//backwards compatibility
+ fn.getbind=getbind;
+ fn.async=jsinc;
+ return fn;
 }
-jsinc.getbind=getbind;
-jsinc.jsinc=jsinc;//backwards compatibility
-module.exports=jsinc;
 
-// to get started do like this:
-//
-//var jsinc   = require('jsinc');
-//var date    = jsinc( 'date.js' );
-//console.log(date);
+jsinc.getbind=getbind;
+jsinc.async=jsinc;

@@ -54,7 +54,7 @@ Read multiple files at once:
     var date = jsinc( 'date.js', 'date2.js' );
 
 Custom context:
----------------
+--------------
 
     if the last argument is an object then it is used as context.
 
@@ -73,12 +73,35 @@ Custom context:
     var context = jsinc( 'date.js' );
         context = jsinc( 'date2.js',context );
 
-Callback and Async file reading and loading
--------------------------------------------
-var app={};
-jsinc( 'date.js',{XMLHttpRequest:require('xmlhttprequest')}, function (date){ app.date=date; });
-// if you add a callback function, the file will be read asynchronously.
 
+Additonal Experimental syntax and options:
+-----------------------------
+
+    // Experimental async version:
+    jsinc( String file1, ... , String fileN, Object context, Function callback(context) )
+
+    //example:
+    var jsincA = require('jsinc').async;
+    var app={};
+    jsincA( 'date.js',{XMLHttpRequest:require('xmlhttprequest')}, function (date){ app.date=date; }); // with a  callback, the file will be read asynchronously.
+
+    
+    //Default Context using getbind function:
+    
+    var jsincbound=jsinc.getbind( Object context ) // return a function( String file1, ... , String fileN, Object context ) 
+    // the getbind method returns a function that checks if there is no context in the arguments then it adds  it from getbind's 1st argument
+    
+    // example:
+    var jsincthis=require('jsinc').getbind( this ) ;
+    jsincthis('foo.js')
+    
+    // a Bound version Inside the Script:
+    // is avalible for the included script
+    // if you want to include a script from within the script you can simply call 
+    jsinc('filename.js')
+    // from within the script to include 'filename.js' to script's global scope
+        
+        
 
 Other Ideas:
 ------------

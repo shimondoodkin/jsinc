@@ -1,3 +1,6 @@
+console.log("PROTO:",this.prototype);
+console.log("PROTO:",this.__proto__);
+console.log("PROTO:",this.__proto__.prototype);
 if(!('Array' in window)) console.log('no Array');
 if(!('ArrayBuffer' in window)) console.log('no ArrayBuffer');
 if(!('Boolean' in window)) console.log('no Boolean');
